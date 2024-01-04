@@ -268,6 +268,7 @@ class Game():
                     if self.current_room.name == "entry hall":
                         self.response = "You unlock the door."
                         self.greenhouse.locked = False
+                        search.single_use = True
 
                     elif self.current_room.name == "library":
                         self.response = "You try the key, but it doesn't fit in this door"
@@ -283,6 +284,7 @@ class Game():
                     if self.current_room.name == "library":
                         self.response = "You unlock the door."
                         self.basement.locked = False
+                        search.single_use = True
 
                     elif self.current_room.name == "entry_hall":
                         self.response = "You try the key, but it doesn't fit in this door"
@@ -530,7 +532,7 @@ class Game():
             self.response = "Invalid input. Try the format [verb] [noun]."
             self.response += "\nType 'a' for a list of accepted commands."
 
-            action = input("What would you like to do?").lower()
+            action = input("What would you like to do? ").lower()
             if action in ["x","exit", "quit", "bye", "q"]:
                 self.running = False
                 break
@@ -556,7 +558,7 @@ class Game():
 
             #extra actions
             if action in ["scream", "aaa"]:
-                self.response = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!"
+                self.response = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!!!!"
                 self.response += "\nI feel much better now."
                 mixer.music.load(r"room_explorer_audio\scream.mp3")
                 mixer.music.play()
@@ -566,7 +568,7 @@ class Game():
             if action == "escape":
                 self.response = "Wow, that's a great idea. I wish I had thought of that earlier."
 
-            if action == "cry":
+            if action in ["cry", "boo hoo", "wahhh"]:
                 self.response = "No, I can't give up hope yet."
 
             if action in ["burn house", "arson", "light everything on fire"]:
@@ -602,6 +604,9 @@ class Game():
                 
 
             print(self.response)
+        
+        sleep(75)
+        print("\nYou're still here? The game's over. Go home.")
 
 
 
@@ -617,13 +622,13 @@ class Game():
         self.credits()
 
     def credits(self):
-        print("\t\t\u0332Room Explorer")
+        print("\t\tRoom Explorer")
         print("\nCode: Rachel Dahl")
         print("\nMusic:\n'Variations on Scarborough Fair' written by Calvin Custer and performed by Cas Curry\n'Flight of the Confused Pigeon' by Rachel and Lexi Dahl\n'Inverse' by Rachel Dahl\nAll other music and sound effects from Pixabay")
         print("\nVoice Acting:\nNumbers station - Rachel Dahl\nDesperate recording - Brandon Jones\nBonus Record - Lexi Dahl")
         print("\nPuzzle Ideas Assistance:\nBrandon Jones\nCaleb Davis\nAbby Mikulski\nChuck Pealer")
-        print("\nTypewriter message: Winnifred (my cat)")
-        print("\nBeta Testing:\nLexi Dahl\n")
+        print("\nTypewriter message:\nWinnifred (my cat)")
+        print("\nBeta Testing:\nLexi Dahl\nBrandon Jones\n")
 
         mixer.init()
         mixer.music.load(r"room_explorer_audio\inverse_cut_room_explorer.wav")
@@ -631,9 +636,5 @@ class Game():
         mixer.music.play()
 
         for i in range(3):
-            sleep(25)
+            pass
 
-        print("You're still here? The game's over. Go home.")
-
-
-    
