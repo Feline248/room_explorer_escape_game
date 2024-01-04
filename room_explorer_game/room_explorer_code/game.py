@@ -1,5 +1,6 @@
 from room import Room
 from items import Item, Grabbable, SoundItem, CodeItem
+import hints
 from pygame import mixer
 from time import sleep
 
@@ -412,7 +413,7 @@ class Game():
                 #unlock box and add basement key to the player's inventory
                 if item == "box":
                     attempt = input("Type your guess for the code here:").replace(" ", "")
-                    if attempt == "11214145":
+                    if attempt == search.correct_code:
                         self.response = "The box pops open. Inside, you find a large, rusted key. You put the key in your pocket."
                         rusty_key = Grabbable("rusty_key", "A large, plain, rust-covered key.")
                         self.inventory.append(rusty_key)
@@ -424,7 +425,7 @@ class Game():
                 #unlock secret compartment and add greenhouse key to the player's inventory
                 if item == "wardrobe":
                     attempt = input("Type your guess for the code here:").replace(" ", "")
-                    if attempt == "rose":
+                    if attempt == search.correct_code:
                         self.response = "A secret compartment slides open! In it, you find a pretty silver key with a flower engraved on the end. You put the key in your pocket."
                         flower_key = Grabbable("flower_key", "A small silver key with a flower-shaped handle.")
                         self.inventory.append(flower_key)
@@ -436,11 +437,61 @@ class Game():
                 #unlock library door
                 if item == "door" and self.current_room.name == "living room":
                     attempt = input("Type your guess for the code here:").replace(" ", "")
-                    if attempt == "490713":
+                    if attempt == search.correct_code:
                         self.response = "You hear a click and the door unlocks."
                         self.library.locked = False
                     
                     break
+
+    #gives player a hint based on the room they're in
+    def hint(self):
+        self.response = hints.default_hint
+
+        #first hint for each room
+        if self.current_room.hints_used == 0:
+            if self.current_room.name == "greenhouse":
+                self.response = hints.greenhouse_hint_0
+            if self.current_room.name == "entry hall":
+                self.response = hints.entry_hall_hint_0  
+            if self.current_room.name == "kitchen":
+                self.response = hints.kitchen_hint_0
+            if self.current_room.name == "attic":
+                self.response = hints.attic_hint_0  
+            if self.current_room.name == "living_room":
+                self.response = hints.living_room_hint_0
+            if self.current_room.name == "basement":
+                self.response = hints.basement_hint_0 
+            if self.current_room.name == "library":
+                self.response = hints.library_hint_0
+            if self.current_room.name == "bathroom":
+                self.response = hints.bathroom_hint_0  
+
+        #2nd hint
+        if self.current_room.hints_used == 1:
+            if self.current_room.name == "greenhouse":
+                self.response = hints.greenhouse_hint_1
+            if self.current_room.name == "entry hall":
+                self.response = hints.entry_hall_hint_1  
+            if self.current_room.name == "kitchen":
+                self.response = hints.kitchen_hint_1
+            if self.current_room.name == "attic":
+                self.response = hints.attic_hint_1  
+            if self.current_room.name == "living_room":
+                self.response = hints.living_room_hint_1
+            if self.current_room.name == "library":
+                self.response = hints.library_hint_1
+
+        #3rd hint
+        if self.current_room.hints_used == 2:
+            if self.current_room.name == "entry hall":
+                self.response = hints.entry_hall_hint_2  
+            if self.current_room.name == "kitchen":
+                self.response = hints.kitchen_hint_2
+            if self.current_room.name == "attic":
+                self.response = hints.attic_hint_2  
+
+        self.current_room.hints_used += 1
+        
 
 
 
@@ -529,7 +580,8 @@ class Game():
             if action in ["celebrate", "woop woop", "cheer"]:
                 self.response = "Yay! I accomplished something!"
                     
-            
+            if action in ["h", "hint"]:
+                self.hint()
 
             words = action.split(" ")
             if len(words) == 2:

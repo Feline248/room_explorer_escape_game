@@ -9,6 +9,7 @@ class Room:
         self.items = [] #the items in the room
         self.room_description = "" #description of the room
         self.locked = False #controls whether a room can be entered
+        self.hints_used = 0
 
     #getters/setters
     @property                               #name
