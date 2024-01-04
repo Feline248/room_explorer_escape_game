@@ -9,6 +9,7 @@ y, yes = answer yes to questions
 n, no = answer no to questions
 a, controls, help = show controls list
 c, credits = play credits sequence
+h, hint = get a hint for the room you're in
 
 Note: replace any spaces in nouns with underscores.
 Ex. rusty key becomes rusty_key
