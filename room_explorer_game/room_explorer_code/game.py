@@ -513,7 +513,7 @@ class Game():
         mixer.music.load(r"room_explorer_audio\rainstorm_cut.mp3")
         mixer.music.set_volume(0.7)
         mixer.music.play()
-        input("\n\n\t\t\tPress enter to begin.")
+        input("\n\n\t\t\t\tPress enter to begin.")
         mixer.music.stop()
         
         
@@ -556,6 +556,10 @@ class Game():
             if action in ["c", "credits"]:
                 self.credits()
 
+            #print room description again
+            if action in ["r", "room"]:
+                self.response = str(self.current_room)
+
             #extra actions
             if action in ["scream", "aaa"]:
                 self.response = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!!!!"
@@ -584,6 +588,7 @@ class Game():
                     
             if action in ["h", "hint"]:
                 self.hint()
+
 
             words = action.split(" ")
             if len(words) == 2:
