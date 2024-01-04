@@ -14,6 +14,7 @@
 #added bonus puzzles that aren't part of the main story
 #added the keyword 'use' to use objects and enter codes
 #added some fun secret commands that the player can figure out
+#added a hints system
                                                                                                                                          
 #######MAIN#######
                                                                                                                                          
