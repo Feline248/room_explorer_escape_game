@@ -230,8 +230,8 @@ class Game():
         for i in range(len(self.inventory)):
             temp = self.inventory[i]
             if temp.name == item_dropped:
-                self.current_room.items.append(item_dropped)
-                self.inventory.delete(item_dropped)
+                self.current_room.items.append(temp)
+                self.inventory.remove(temp)
                 self.response = f"You drop the {item_dropped}"
 
     def handle_use(self, item):
