@@ -112,7 +112,7 @@ class Game():
         living_room.add_item("piano", "There is a beautiful piano in one corner of the room. It has a piece of hand-written sheet music sitting on top of it.")                                               #living room
 
         library.add_item("typewriter", "There's some paper sticking out. It says: \n'vc ccc./  n                                          jnmfcdok.l,;'\nI think whoever lived here must have had a cat.")          #library
-        library.add_item("book", "An old cookbook is laying on the desk. There's a highlighted passage:\n'There's lots of debate over the best way to organize the ingredients in a recipe, but I always like to put mine in alphabetical order.'")
+        library.add_item("book", "An old cookbook is laying on the desk. There's a highlighted passage:\n'There's lots of debate over the best way to organize the ingredients in a recipe, but I always like to put mine in alphabetical order by the ingredient name.'")
         library.add_item("globe", "An old fashioned globe, complete with doodles of sea monsters lurking in the ocean.")
         library.add_item("fireplace", "A large brick fireplace. It's too bad there's no wood, it's kind of cold in here.")
 
@@ -202,6 +202,7 @@ class Game():
                         break
                     else:
                         print("You step away from the window")
+                        mixer.music.stop()
 
                 #let player search for bonus record in fireplace once greenhouse has been unlocked
                 if temp.name == "fireplace" and self.greenhouse.locked == False:
@@ -235,7 +236,7 @@ class Game():
                 self.response = f"You drop the {item_dropped}"
 
     def handle_use(self, item):
-        self.response = "I can't use an item I don't have."
+        self.response = "I don't see a way I could use that here."
         
         #inventory items
         for i in range(len(self.inventory)):
@@ -245,7 +246,7 @@ class Game():
                 #add key to player's invnentory when umbrella is opened
                 if item == "umbrella":
                     self.response = "You open the umbrella. A tiny gold key with an intricately carved treble clef on it falls out."
-                    tiny_key = Item("tiny_key", "A tiny gold key with an intricately carved treble clef on it")
+                    tiny_key = Grabbable("tiny_key", "A tiny gold key with an intricately carved treble clef on it")
                     self.inventory.append(tiny_key)
                     search.single_use = True
                 
@@ -390,60 +391,61 @@ class Game():
                            
 
                 else:
-                    self.response = "I don't see a way I could use that here."
+                    self.response = "I can't use an item I don't have."
             
         
 
 
         #Code Items
-        for i in range(len(self.current_room.items)):
-            search = self.current_room.items[i]
-            if search.name == item:
-                self.response = "Nothing happens. You must have entered the wrong code."
-        
-                #unlock cabinet and add music box to room
-                if item == "cabinet" and self.current_room.name == "entry hall":
+        if item in ["cabinet", "door", "box", "wardrobe"]:
+            for i in range(len(self.current_room.items)):
+                search = self.current_room.items[i]
+                if search.name == item:
+                    self.response = "Nothing happens. You must have entered the wrong code."
 
-                    attempt = input("Type your guess for the code here:").replace(" ", "")
-                    if attempt == search.correct_code:
-                        self.response = "The cabinet opens. Inside, you see a small music box with a keyhole in it."
-                        self.entry_hall.add_item("music box", "A small wooden music box with a keyhole. An engraving on the bottom says\n'Congratulations! You solved a set of extra-hard puzzles and found one of the bonuses!\nPlease enjoy this music as a reward.'")
+                    #unlock cabinet and add music box to room
+                    if item == "cabinet" and self.current_room.name == "entry hall":
 
-                    break
+                        attempt = input("Type your guess for the code here:").replace(" ", "")
+                        if attempt == search.correct_code:
+                            self.response = "The cabinet opens. Inside, you see a small music box with a keyhole in it."
+                            self.entry_hall.add_item("music box", "A small wooden music box with a keyhole. An engraving on the bottom says\n'Congratulations! You solved a set of extra-hard puzzles and found one of the bonuses!\nPlease enjoy this music as a reward.'")
 
-
-                #unlock box and add basement key to the player's inventory
-                if item == "box":
-                    attempt = input("Type your guess for the code here:").replace(" ", "")
-                    if attempt == search.correct_code:
-                        self.response = "The box pops open. Inside, you find a large, rusted key. You put the key in your pocket."
-                        rusty_key = Grabbable("rusty_key", "A large, plain, rust-covered key.")
-                        self.inventory.append(rusty_key)
-                    
-                    break
+                        break
 
 
+                    #unlock box and add basement key to the player's inventory
+                    if item == "box":
+                        attempt = input("Type your guess for the code here:").replace(" ", "")
+                        if attempt == search.correct_code:
+                            self.response = "The box pops open. Inside, you find a large, rusted key. You put the key in your pocket."
+                            rusty_key = Grabbable("rusty_key", "A large, plain, rust-covered key.")
+                            self.inventory.append(rusty_key)
 
-                #unlock secret compartment and add greenhouse key to the player's inventory
-                if item == "wardrobe":
-                    attempt = input("Type your guess for the code here:").replace(" ", "")
-                    if attempt == search.correct_code:
-                        self.response = "A secret compartment slides open! In it, you find a pretty silver key with a flower engraved on the end. You put the key in your pocket."
-                        flower_key = Grabbable("flower_key", "A small silver key with a flower-shaped handle.")
-                        self.inventory.append(flower_key)
-                    
-                    break
+                        break
 
 
 
-                #unlock library door
-                if item == "door" and self.current_room.name == "living room":
-                    attempt = input("Type your guess for the code here:").replace(" ", "")
-                    if attempt == search.correct_code:
-                        self.response = "You hear a click and the door unlocks."
-                        self.library.locked = False
-                    
-                    break
+                    #unlock secret compartment and add greenhouse key to the player's inventory
+                    if item == "wardrobe":
+                        attempt = input("Type your guess for the code here:").replace(" ", "")
+                        if attempt == search.correct_code:
+                            self.response = "A secret compartment slides open! In it, you find a pretty silver key with a flower engraved on the end. You put the key in your pocket."
+                            flower_key = Grabbable("flower_key", "A small silver key with a flower-shaped handle.")
+                            self.inventory.append(flower_key)
+
+                        break
+
+
+
+                    #unlock library door
+                    if item == "door" and self.current_room.name == "living room":
+                        attempt = input("Type your guess for the code here:").replace(" ", "")
+                        if attempt == search.correct_code:
+                            self.response = "You hear a click and the door unlocks."
+                            self.library.locked = False
+
+                        break
 
     #gives player a hint based on the room they're in
     def hint(self):
@@ -551,6 +553,12 @@ class Game():
                 controls = open(r"room_explorer_info\controls.txt")
                 self.response = controls.read()
                 controls.close()
+
+            #print the map
+            if action in ["m", "map"]:
+                map = open(r"room_explorer_info\map.txt")
+                self.response = map.read()
+                map.close()
                
             #run credits sequence
             if action in ["c", "credits"]:
@@ -633,7 +641,7 @@ class Game():
         print("\nVoice Acting:\nNumbers station - Rachel Dahl\nDesperate recording - Brandon Jones\nBonus Record - Lexi Dahl")
         print("\nPuzzle Ideas Assistance:\nBrandon Jones\nCaleb Davis\nAbby Mikulski\nChuck Pealer")
         print("\nTypewriter message:\nWinnifred (my cat)")
-        print("\nBeta Testing:\nLexi Dahl\nBrandon Jones\n")
+        print("\nBeta Testing:\nLexi Dahl\nCaleb Davis\n")
 
         mixer.init()
         mixer.music.load(r"room_explorer_audio\inverse_cut_room_explorer.wav")
