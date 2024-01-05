@@ -10,6 +10,8 @@ n, no = answer no to questions
 a, controls, help = show controls list
 c, credits = play credits sequence
 h, hint = get a hint for the room you're in
+r, room = re-print the room description
+m, map = print map of house
 
 Note: replace any spaces in nouns with underscores.
 Ex. rusty key becomes rusty_key
