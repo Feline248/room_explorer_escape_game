@@ -1,3 +1,7 @@
+This is the original text-based version of the game. I'm working on developing a GUI version available here: 
+https://github.com/Feline248/room_explorer_escape_game_gui
+
+
 To play, open the terminal, command prompt, or equivalent program,
 navigate to the room_explorer_game folder, and then type either py
 on a windows system or python3 on mac or linux followed by
